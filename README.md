@@ -4,8 +4,8 @@
 
 ```sh
 git clone https://github.com/steevelefort/boutique-cnam-2021
-cp .env.example .env
 cd boutique-cnam-2021
+cp .env.example .env
 composer install
 npm install
 npm run dev
