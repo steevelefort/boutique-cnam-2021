@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use App\Libs\Common;
+use App\Models\Products;
 use Illuminate\Http\Request;
 use App\Models\StaticProducts;
 
@@ -10,7 +12,9 @@ class ProductController extends Controller
 {
     public function index() {
         $products = StaticProducts::get();
-        return view("products.index")->withProducts($products);
+        return view("products.index")
+            ->with('products',$products)
+            ;
     }
 
     public function showProduct($id) {
@@ -75,5 +79,15 @@ class ProductController extends Controller
             ->withVat($vat);
     }
 
+    // public function createUser(UserRequest $request) {}
+
+    public function createProduct() {
+        return view("products.create");
+    }
+
+    public function saveProduct(ProductRequest $request) {
+        Products::create($request->all());
+        dd($request->all());
+    }
 
 }
