@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Libs\Common;
-use App\Models\Products;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\StaticProducts;
 
 class ProductController extends Controller
 {
     public function index() {
-        $products = StaticProducts::get();
+        //$products = StaticProducts::get();
+        $products = Product::orderBy('name')->get();
         return view("products.index")
             ->with('products',$products)
             ;
@@ -86,8 +87,18 @@ class ProductController extends Controller
     }
 
     public function saveProduct(ProductRequest $request) {
-        Products::create($request->all());
-        dd($request->all());
+
+        $product = Product::create($request->all());
+
+        if ($request->image != null) {
+            $image = $product->id . '.' . $request->image->extension();
+            $request->file('image')->move(public_path('images'), $image);
+            $product->image = $image;
+            $product->save();
+        }
+
+        return redirect('/');
+
     }
 
 }

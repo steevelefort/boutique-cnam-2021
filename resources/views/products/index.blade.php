@@ -12,7 +12,7 @@
                     <div>{{$product->name}}</div>
                     <div class="font-bold">{{ \App\Libs\Common::withVAT($product->price,$product->vat) }}€</div>
                 </div>
-                <a class="bg-blue-700 text-white px-4 py-1 inline-block w-full text-center rounded-sm text-lg" href="{{url('/')}}/product/{{$product->id}}">Voir</a>
+                <a class="bg-blue-700 text-white px-4 py-1 inline-block w-full text-center rounded-sm text-lg" href="{{url('/')}}/product/view/{{$product->id}}">Voir</a>
             </div>
         </div>
         @endforeach
