@@ -6,7 +6,7 @@ use App\Http\Requests\ProductRequest;
 use App\Libs\Common;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Models\StaticProducts;
+// use App\Models\StaticProducts;
 
 class ProductController extends Controller
 {
@@ -19,12 +19,7 @@ class ProductController extends Controller
     }
 
     public function showProduct($id) {
-        $products = StaticProducts::get();
-
-        $product = null;
-        foreach ($products as $item) {
-            if ($item->id == $id) $product = $item;
-        }
+        $product = Product::findOrFail($id);
 
         if ($product!==null)
             return view("products.product")->withProduct($product);
@@ -35,13 +30,8 @@ class ProductController extends Controller
     }
 
     public function addToCart(Request $request, $id) {
-        $products = StaticProducts::get();
+        $product = Product::findOrFail($id);
         $cart = $request->session()->get('cart',[]);
-
-        $product = null;
-        foreach ($products as $item) {
-            if ($item->id == $id) $product = $item;
-        }
 
         if ($product!==null) {
             $found = false;
@@ -63,7 +53,6 @@ class ProductController extends Controller
                 ->with("code",404)
                 ->with("message","Ce produit n'existe pas");
         }
-
     }
 
     public function viewCart(Request $request){
@@ -79,8 +68,6 @@ class ProductController extends Controller
             ->withTotal($total)
             ->withVat($vat);
     }
-
-    // public function createUser(UserRequest $request) {}
 
     public function createProduct() {
         return view("products.create");
